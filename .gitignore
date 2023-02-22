@@ -1,0 +1,10 @@
+# Dependencies & Auto-Generation
+**/.terraform
+**/*.tfstate*
+
+# Secrets
+**/secret/*
+**/*.tfvars
+
+# Git-Keep
+!**/.gitkeep

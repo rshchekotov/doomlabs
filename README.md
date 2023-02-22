@@ -52,7 +52,7 @@ server.
 
 ### Git Server
 My resources are quite limited (feel free to donate), so, for now I'll
-run a [Gitea](https://gitea.io/) instance.
+run a [dockerized](https://docs.gitea.io/en-us/install-with-docker/) [Gitea](https://gitea.io/) instance.
 With [plugins and all](https://gitea.com/gitea/awesome-gitea), it should 
 be able to handle most of my needs, namely CI/CD, issue tracking, stats 
 for nerds and braggers, etc...

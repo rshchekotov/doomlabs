@@ -23,6 +23,7 @@ locals {
   ldap_env = yamlencode(merge({
     LDAP_ORGANISATION   = var.ldap_organization,
     LDAP_DOMAIN         = var.environment == "production" ? "ldap.${var.host_name}.${var.host_tld}" : "ldap.localhost",
+    LDAP_BACKEND        = "mdb",
     LDAP_BASE_DN        = local.ldap_base_dn,
     LDAP_ADMIN_PASSWORD = var.ldap_root_password
     }, var.environment == "production" ? {
@@ -34,16 +35,13 @@ locals {
   }))
 
   # LDIF's
-  base_ldif = templatefile("${path.module}/data/base.tpl", {
-    base_dn          = local.ldap_base_dn
-    gitea_users      = lookup(var.ldap_group_memberships, "gitea_users", [])
-    acquaintances    = lookup(var.ldap_group_memberships, "acquaintances", [])
-    casual_friends   = lookup(var.ldap_group_memberships, "casual_friends", [])
-    close_friends    = lookup(var.ldap_group_memberships, "close_friends", [])
-    intimate_friends = lookup(var.ldap_group_memberships, "intimate_friends", [])
-  })
+  groups_ldif = join("\n\n", [for name, data in var.ldap_group_memberships : templatefile("${path.module}/data/group_entry.tpl", {
+    name        = name
+    description = data.description
+    users       = data.users
+  })])
+
   users_ldif = join("\n\n", [for idx, user in var.ldap_users : templatefile("${path.module}/data/user_entry.tpl", {
-    base_dn  = local.ldap_base_dn
     ldap_org = var.ldap_organization
     # User Variables
     id         = 8001 + idx
@@ -81,9 +79,9 @@ locals {
 #endregion
 
 #region Local Files
-resource "local_sensitive_file" "base_ldif" {
-  content  = local.base_ldif
-  filename = "${path.module}/docker/secret/base.ldif"
+resource "local_sensitive_file" "groups_ldif" {
+  content  = local.groups_ldif
+  filename = "${path.module}/docker/secret/groups.ldif"
 }
 
 resource "local_sensitive_file" "users_ldif" {
@@ -124,7 +122,7 @@ resource "docker_image" "ldap" {
   }
 
   depends_on = [
-    local_sensitive_file.base_ldif,
+    local_sensitive_file.groups_ldif,
     local_sensitive_file.users_ldif
   ]
 }

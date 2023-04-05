@@ -1,0 +1,79 @@
+\documentclass[a4paper]{limecv}
+
+%region Packages
+\usepackage[margin=\cvMargin,noheadfoot]{geometry}
+\usepackage{silence}
+%endregion
+
+%region Suppress Warnings
+\WarningFilter{latexfont}{Font shape `OT1/}
+%endregion
+
+%region Color Scheme
+\definecolor{cvGreen}{HTML}{1E90FF}      % Dark Green -> Dodger Blue
+\definecolor{cvGreenLight}{HTML}{BBDDFF} % Dodger Blue (-80%)
+\definecolor{cvDark}{HTML}{2F3142}       % Dark Gray
+\definecolor{cvAccent}{HTML}{474A65}     % Light Gray
+%endregion
+
+%region Custom Commands
+\newcommand{\cvEduEntry}[3]{{\bfseries #1}\\#2\\\emph{#3}}
+\newcommand{\cvWorkEntry}[3]{{\bfseries #1}\\#2\\\emph{#3}}
+%\activenewcommand*\ruleline[1]{\par\noindent\raisebox{.8ex}{\makebox[\linewidth]{\hrulefill\hspace{1ex}\raisebox{-.8ex}{#1}\hspace{1ex}\hrulefill}}}
+%endregion
+
+\begin{document}
+
+\begin{cvSidebar}
+    \cvID{\vspace{0.2cm}Roman}{Shchekotov}{picture}{Freelance Full-Stack Engineer}
+    \begin{cvProfile}
+        Computer Scientists \& Software Engineer in constant search of new 
+        challenges and technologies to learn.
+    \end{cvProfile}
+    \begin{cvContact}
+        \cvContactAddress{Munich, Germany}
+        \cvContactEmail{mailto:rom.shchekotov+recruit@gmail.com}{rom.shchekotov@gmail.com}
+        \cvContactPhone{+49 160 95918045}
+        \cvContactGithub{https://github.com/rshchekotov}{rshchekotov}
+        \cvContactGitlab{https://gitlab.com/romshchekotov}{romshchekotov}
+        \cvContactLinkedin{https://www.linkedin.com/in/roman-shchekotov}{Roman Shchekotov}
+    \end{cvContact}
+    \begin{cvLanguages}
+        \cvLanguage{German (native)}{5}
+        \cvLanguage{Russian (native)}{5}
+        \cvLanguage{English (fluent)}{4}
+    \end{cvLanguages}
+    \begin{cvInterests}[short]
+        \cvInterestsPersonal
+        \cvInterest{\faBook}{typesetting}
+        \cvInterest{\faGraduationCap}{teaching \& learning}
+        \cvInterestsProfessional
+        \cvInterest{\faCubes}{infrastructure as code}
+        \cvInterest{\faGlobe}{web development}
+    \end{cvInterests}
+\end{cvSidebar}
+
+\begin{cvMainContent}
+    \begin{cvEducation}
+        \cvItem{\cvEduEntry{B.Sc. in Computer Science}%
+            {Technical University of Munich. October 2021 -- Present}%
+            {In-depth education in Computer Science, Mathematics \& related fields.}}
+        \cvItem{\cvEduEntry{High School Diploma}%
+            {Michaeli Gymnasium, Munich. September 2013 -- June 2021}%
+            {General education on a broad range of subjects.}}
+    \end{cvEducation}
+    \begin{cvExperience}
+        \cvItem{\cvWorkEntry{.}{.}{.}}
+    \end{cvExperience}
+    \begin{cvSkills}
+        \cvSkillOne{5}{Java 8 -- 18}
+        \cvSkillTwo{5}{Spring}{4}{Hibernate\vspace{.3cm}}
+        \cvSkillOne{5}{TypeScript/JavaScript}
+        \cvSkillTwo{5}{Vue/NuxtJS}{5}{Svelte(Kit)}
+        \cvSkillTwo{5}{Express}{5}{NestJS}
+        \cvSkillTwo{5}{Prisma}{4}{Angular\vspace{.3cm}}
+        \cvSkillTwo{4}{Docker}{4}{Terraform}
+    \end{cvSkills}
+\end{cvMainContent}
+
+\end{document}

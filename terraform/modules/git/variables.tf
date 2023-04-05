@@ -38,7 +38,13 @@ variable "network-name" {
   description = "The name of the network to create the LDAP server on."
 }
 
-variable "volume-certificates" {
+variable "gitea-postgres-user" {
   type        = string
-  description = "The name of the volume to store the certificates in."
+  description = "The user to use for the Gitea Postgres database."
+}
+
+variable "gitea-postgres-password" {
+  type        = string
+  description = "The password to use for the Gitea Postgres database."
+  sensitive   = true
 }

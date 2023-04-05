@@ -1,4 +1,4 @@
-dn: uid=${uid},ou=People,${base_dn}
+dn: uid=${uid},ou=People,{{ LDAP_BASE_DN }}
 uid: ${uid}
 cn: ${first_name} ${last_name}
 sn: ${last_name}

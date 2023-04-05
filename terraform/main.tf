@@ -81,7 +81,22 @@ module "ldap" {
     local  = local
   }
 }
+module "git" {
+  source = "./modules/git"
 
+  brand-name              = var.brand
+  brand-abbrev            = var.brand-abbrev
+  environment             = var.environment
+  host_name               = var.host_name
+  host_tld                = var.host_tld
+  network-name            = local.internal-network
+  gitea-postgres-user     = var.gitea_postgres_user
+  gitea-postgres-password = var.gitea_postgres_password
+
+  providers = {
+    docker = docker
+  }
+}
 module "router" {
   source = "./modules/router"
 
@@ -91,6 +106,7 @@ module "router" {
   host_name           = var.host_name
   host_tld            = var.host_tld
   ldap_host           = module.ldap.ldap_host
+  git_host            = module.git.git_host
   network-name        = local.internal-network
   volume-certificates = var.environment == "production" ? module.certificates[0].certificates : docker_volume.dummy.name
 

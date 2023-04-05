@@ -80,8 +80,11 @@ variable "cloudflare_token" {
 #region LDAP Variables
 variable "ldap_group_memberships" {
   description = "LDAP Group Memberships"
-  type        = map(list(string))
-  sensitive   = true
+  type = map(object({
+    description = string
+    users       = list(string)
+  }))
+  sensitive = true
 }
 
 variable "ldap_organization" {
@@ -108,6 +111,20 @@ variable "ldap_users" {
 variable "ldap_root_password" {
   type        = string
   description = "LDAP Root Password"
+  sensitive   = true
+}
+#endregion
+
+#region Gitea Variables
+variable "gitea_postgres_user" {
+  type        = string
+  description = "Gitea Postgres User"
+  default     = "gitea"
+}
+
+variable "gitea_postgres_password" {
+  type        = string
+  description = "Gitea Postgres Password"
   sensitive   = true
 }
 #endregion

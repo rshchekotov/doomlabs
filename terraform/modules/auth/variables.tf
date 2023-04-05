@@ -40,8 +40,11 @@ variable "ldap_organization" {
 
 variable "ldap_group_memberships" {
   description = "A collection of group memberships to create in the LDAP server."
-  type        = map(list(string))
-  sensitive   = true
+  type = map(object({
+    description = string
+    users       = list(string)
+  }))
+  sensitive = true
 }
 
 variable "ldap_users" {

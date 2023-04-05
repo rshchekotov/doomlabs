@@ -11,7 +11,11 @@ terraform {
 
 #region Local Variables
 locals {
-  domain = var.environment == "production" ? "${var.host_name}.${var.host_tld}" : "localhost"
+  domain     = var.environment == "production" ? "${var.host_name}.${var.host_tld}" : "localhost"
+  gitea_port = 3000
+  web_port   = var.environment == "production" ? 443 : 80
+  web_proto  = var.environment == "production" ? "https" : "http"
+  ldap_port  = var.environment == "production" ? 636 : 389
 }
 #endregion
 
@@ -61,7 +65,12 @@ resource "docker_service" "tcp_proxy" {
         DOLLAR      = "$",
         DOMAIN      = local.domain,
         ENVIRONMENT = var.environment,
-        LDAP_HOST   = var.ldap_host
+        LDAP_HOST   = var.ldap_host,
+        LDAP_PORT   = local.ldap_port,
+        GIT_HOST    = var.git_host,
+        GIT_PORT    = local.gitea_port,
+        WEB_PORT    = local.web_port,
+        WEB_PROTO   = local.web_proto
       }
     }
     restart_policy {
@@ -80,9 +89,15 @@ resource "docker_service" "tcp_proxy" {
 
   endpoint_spec {
     ports {
-      target_port = 389
-      published_port = 389
-      publish_mode = "host"
+      target_port    = local.web_port
+      published_port = local.web_port
+      publish_mode   = "host"
+    }
+
+    ports {
+      target_port    = local.ldap_port
+      published_port = local.ldap_port
+      publish_mode   = "host"
     }
   }
 }

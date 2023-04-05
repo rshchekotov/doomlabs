@@ -43,6 +43,11 @@ variable "ldap_host" {
   description = "Hostname for the LDAP Container"
 }
 
+variable "git_host" {
+  type = string
+  description = "Hostname for the Git Container"
+}
+
 variable "volume-certificates" {
   type        = string
   description = "The name of the volume to store the certificates in."

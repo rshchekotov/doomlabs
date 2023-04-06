@@ -9,6 +9,12 @@ terraform {
 }
 #endregion
 
+#region Local Variables
+locals {
+  domain = var.environment == "production" ? "git.${var.host_name}.${var.host_tld}" : "git.localhost"
+  proto  = var.environment == "production" ? "https" : "http"
+}
+
 #region Docker Volumes
 resource "docker_volume" "gitea_data" {
   name = "${var.brand-abbrev}-gitea-data"
@@ -84,15 +90,35 @@ resource "docker_service" "gitea" {
       }
 
       env = {
+        APP_NAME                             = "${var.brand-name} Gitea",
+        USER                                 = "git",
         USER_UID                             = "1000",
         USER_GID                             = "1000",
+        GITEA_ADMIN_NAME                     = var.gitea-admin-name,
+        GITEA_ADMIN_EMAIL                    = var.gitea-admin-email,
+        GITEA_ADMIN_PASSWORD                 = var.gitea-admin-password,
         GITEA__database__DB_TYPE             = "postgres",
         GITEA__database__HOST                = "${var.brand-abbrev}-gitea-postgres:5432",
         GITEA__database__NAME                = "gitea",
         GITEA__database__USER                = var.gitea-postgres-user,
         GITEA__database__PASSWD              = var.gitea-postgres-password,
+        GITEA__security__INSTALL_LOCK        = "true",
+        GITEA__server__ROOT_URL              = "${local.proto}://${local.domain}/",
+        GITEA__server__DOMAIN                = local.domain,
         GITEA__service__DISABLE_REGISTRATION = "true",
-        GITEA__actions__ENABLED              = "true"
+        GITEA__actions__ENABLED              = "true",
+        LDAP_NAME                            = "${var.brand-name} LDAP",
+        LDAP_HOST                            = var.ldap-host,
+        LDAP_PORT                            = var.ldap-port,
+        LDAP_BIND_DN                         = var.ldap-bind-dn,
+        LDAP_BIND_PASSWORD                   = var.ldap-bind-password,
+        LDAP_USER_FILTER                     = var.ldap-user-filter,
+        LDAP_ADMIN_FILTER                    = var.ldap-admin-filter,
+        LDAP_USER_BASE                       = var.ldap-user-base,
+        LDAP_ATTRIBUTE_USERNAME              = var.ldap-attribute-username,
+        LDAP_ATTRIBUTE_EMAIL                 = var.ldap-attribute-email,
+        LDAP_ATTRIBUTE_FIRST_NAME            = var.ldap-attribute-first-name,
+        LDAP_ATTRIBUTE_LAST_NAME             = var.ldap-attribute-last-name
       }
     }
 

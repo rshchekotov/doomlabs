@@ -92,6 +92,16 @@ module "git" {
   network-name            = local.internal-network
   gitea-postgres-user     = var.gitea_postgres_user
   gitea-postgres-password = var.gitea_postgres_password
+  gitea-admin-name        = var.gitea_admin_name
+  gitea-admin-password    = var.gitea_admin_password
+  gitea-admin-email       = var.gitea_admin_email
+  ldap-host               = module.ldap.ldap_host
+  ldap-port               = 389
+  ldap-bind-dn            = "cn=admin,${module.ldap.ldap_base_dn}"
+  ldap-bind-password      = var.ldap_root_password
+  ldap-user-base          = var.ldap_user_base
+  ldap-user-filter        = "(&${var.ldap_git_user_filter}(uid=%s))"
+  ldap-admin-filter       = "(&${var.ldap_admin_filter}(uid=%s))"
 
   providers = {
     docker = docker

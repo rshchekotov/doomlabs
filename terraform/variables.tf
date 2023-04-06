@@ -113,6 +113,21 @@ variable "ldap_root_password" {
   description = "LDAP Root Password"
   sensitive   = true
 }
+
+variable "ldap_user_base" {
+  type        = string
+  description = "LDAP User Base"
+}
+
+variable "ldap_git_user_filter" {
+  type        = string
+  description = "LDAP Git Filter"
+}
+
+variable "ldap_admin_filter" {
+  type        = string
+  description = "LDAP Admin Filter"
+}
 #endregion
 
 #region Gitea Variables
@@ -125,6 +140,24 @@ variable "gitea_postgres_user" {
 variable "gitea_postgres_password" {
   type        = string
   description = "Gitea Postgres Password"
+  sensitive   = true
+}
+
+variable "gitea_admin_name" {
+  type        = string
+  description = "Gitea Admin Name"
+  default     = "gitea_admin"
+}
+
+variable "gitea_admin_email" {
+  type        = string
+  description = "Gitea Admin Email"
+  default     = "gitea@localhost"
+}
+
+variable "gitea_admin_password" {
+  type        = string
+  description = "Gitea Admin Password"
   sensitive   = true
 }
 #endregion

@@ -5,6 +5,12 @@ env:
 
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - 'curriculum-vitae/**'
+  pull_request:
+    paths:
+      - 'curriculum-vitae/**'
 
 jobs:
   build:
@@ -15,6 +21,7 @@ jobs:
       uses: actions/checkout@v3
       with:
         fetch-depth: 2147483647
+    # English CV Build
     - name: Build English CV
       uses: dante-ev/latex-action@2021-C
       with:
@@ -23,21 +30,28 @@ jobs:
     - name: Post-process English CV
       run: |
         mv "$CV/$CV.pdf" "Roman Shchekotov English CV.$(date +'%y-%m-%d').pdf"
+    - name: Upload English CV
+      uses: actions/upload-artifact@v2
+      with:
+        name: Roman Shchekotov English CV
+        path: |
+          Roman Shchekotov English CV.*
+    # German CV Build
     - name: Pre-process German CV
       run: |
         sed -i 's/\\documentclass\[\(.*\)\]{doomcv}/\\documentclass\[\1,german\]{doomcv}/g' "$CV/$CV.tex"
     - name: Build German CV
-      uses: dante-ev/latex-action@latest
+      uses: dante-ev/latex-action@2021-C
       with:
         root_file: ${{ env.CV }}/${{ env.CV }}.tex
         args: -cd -pdflua -interaction=nonstopmode -halt-on-error -shell-escape
     - name: Post-process German CV
       run: |
         mv "$CV/$CV.pdf" "Roman Shchekotov German CV.$(date +'%y-%m-%d').pdf"
-    - name: Upload artifacts
+    - name: Upload German CV
       uses: actions/upload-artifact@v2
       with:
-        name: documents
+        name: Roman Shchekotov German CV
         path: |
-          *.pdf
+          Roman Shchekotov German CV.*
 

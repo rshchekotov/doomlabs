@@ -1,79 +1,132 @@
-\documentclass[a4paper]{limecv}
-
-%region Packages
-\usepackage[margin=\cvMargin,noheadfoot]{geometry}
-\usepackage{silence}
-%endregion
-
-%region Suppress Warnings
-\WarningFilter{latexfont}{Font shape `OT1/}
-%endregion
-
-%region Color Scheme
-\definecolor{cvGreen}{HTML}{1E90FF}      % Dark Green -> Dodger Blue
-\definecolor{cvGreenLight}{HTML}{BBDDFF} % Dodger Blue (-80%)
-\definecolor{cvDark}{HTML}{2F3142}       % Dark Gray
-\definecolor{cvAccent}{HTML}{474A65}     % Light Gray
-%endregion
-
-%region Custom Commands
-\newcommand{\cvEduEntry}[3]{{\bfseries #1}\\#2\\\emph{#3}}
-\newcommand{\cvWorkEntry}[3]{{\bfseries #1}\\#2\\\emph{#3}}
-%\activenewcommand*\ruleline[1]{\par\noindent\raisebox{.8ex}{\makebox[\linewidth]{\hrulefill\hspace{1ex}\raisebox{-.8ex}{#1}\hspace{1ex}\hrulefill}}}
-%endregion
+\documentclass[10pt,a4paper]{doomcv}
 
 \begin{document}
+% Navy Blue Sidebar
+\begin{sidebar}
+    \hypersetup{urlcolor=blue!10!white}
+    \begin{center}
+        \begin{tikzpicture}
+            \clip (0,1.1) circle (2.4cm);
+            \node at (0.4,0) {\includegraphics[width=7cm]{myself}};
+        \end{tikzpicture}
+        \vspace{0.2cm}\\
+        \textbf{\Large Roman Shchekotov}\vspace{1pt}\\
+        \faMapMarker\ \textit{\doomcvMunich, \doomcvGermany}
+    \end{center}
 
-\begin{cvSidebar}
-    \cvID{\vspace{0.2cm}Roman}{Shchekotov}{picture}{Freelance Full-Stack Engineer}
-    \begin{cvProfile}
-        Computer Scientists \& Software Engineer in constant search of new 
-        challenges and technologies to learn.
-    \end{cvProfile}
-    \begin{cvContact}
-        \cvContactAddress{Munich, Germany}
-        \cvContactEmail{mailto:rom.shchekotov+recruit@gmail.com}{rom.shchekotov@gmail.com}
-        \cvContactPhone{+49 160 95918045}
-        \cvContactGithub{https://github.com/rshchekotov}{rshchekotov}
-        \cvContactGitlab{https://gitlab.com/romshchekotov}{romshchekotov}
-        \cvContactLinkedin{https://www.linkedin.com/in/roman-shchekotov}{Roman Shchekotov}
-    \end{cvContact}
-    \begin{cvLanguages}
-        \cvLanguage{German (native)}{5}
-        \cvLanguage{Russian (native)}{5}
-        \cvLanguage{English (fluent)}{4}
-    \end{cvLanguages}
-    \begin{cvInterests}[short]
-        \cvInterestsPersonal
-        \cvInterest{\faBook}{typesetting}
-        \cvInterest{\faGraduationCap}{teaching \& learning}
-        \cvInterestsProfessional
-        \cvInterest{\faCubes}{infrastructure as code}
-        \cvInterest{\faGlobe}{web development}
-    \end{cvInterests}
-\end{cvSidebar}
+    \vspace{0.3cm}
+    \begin{center}
+        \textbf{\Large \doomcvProfiles}\vspace{0.2cm}\\
+        \begin{tabular}{@{}ll@{}}
+            \faEnvelope & \href{mailto:rom.shchekotov@gmail.com}{rom.shchekotov@gmail.com}\\
+            \faGithub & \href{https://github.com/rshchekotov}{rshchekotov}\\
+            \faGitlab & \href{https://gitlab.com/romshchekotov}{romshchekotov}\\
+            \faLinkedin & \href{https://www.linkedin.com/in/roman-shchekotov}{Roman Shchekotov}\\
+        \end{tabular}
+    \end{center}
+\end{sidebar}
 
-\begin{cvMainContent}
-    \begin{cvEducation}
-        \cvItem{\cvEduEntry{B.Sc. in Computer Science}%
-            {Technical University of Munich. October 2021 -- Present}%
-            {In-depth education in Computer Science, Mathematics \& related fields.}}
-        \cvItem{\cvEduEntry{High School Diploma}%
-            {Michaeli Gymnasium, Munich. September 2013 -- June 2021}%
-            {General education on a broad range of subjects.}}
-    \end{cvEducation}
-    \begin{cvExperience}
-        \cvItem{\cvWorkEntry{.}{.}{.}}
-    \end{cvExperience}
-    \begin{cvSkills}
-        \cvSkillOne{5}{Java 8 -- 18}
-        \cvSkillTwo{5}{Spring}{4}{Hibernate\vspace{.3cm}}
-        \cvSkillOne{5}{TypeScript/JavaScript}
-        \cvSkillTwo{5}{Vue/NuxtJS}{5}{Svelte(Kit)}
-        \cvSkillTwo{5}{Express}{5}{NestJS}
-        \cvSkillTwo{5}{Prisma}{4}{Angular\vspace{.3cm}}
-        \cvSkillTwo{4}{Docker}{4}{Terraform}
-    \end{cvSkills}
-\end{cvMainContent}
+% Main Content
+\begin{mainpane}
+\begin{education}{5}
+    \educationentry{4}{\doomcvPresent}{\doomcvEduCSBsc}{TU \doomcvMunich}
+    \educationentry{3}{2021}{\doomcvEduHS}{Michaeli-Gymnasium, \doomcvMunich}
+    \educationentry{2}{2013}{\doomcvEduES}{Astrid Lindgren GS, \doomcvMunich}
+    \educationentry{1}{2012}{\doomcvEduES}{Grundschule Garching West}
+\end{education}
+
+\cvpanesection{\doomcvSkills}
+\cvpanesubsection{\doomcvTechnology}
+\begin{tabularx}{0.9\mainpanewidth}{@{}l X@{}}
+    \textbf{\doomcvProgLang} & Java, TypeScript (JavaScript), C, Julia, Python\vspace{.2cm}\\
+    \textbf{\doomcvIntSer} & Node.js, Spring, Docker, Nginx\vspace{.2cm}\\
+    \textbf{\doomcvDatabases} & MySQL, PostgreSQL, MongoDB, Redis\vspace{.2cm}\\
+    \textbf{\doomcvFrontend} & Angular(.js), Vue.js, SASS/LESS, Nest.js, Nuxt.js\vspace{.2cm}\\
+    \textbf{\doomcvDocs} & \LaTeX, Markdown, Org, Confluence\vspace{.2cm}\\
+    \textbf{\doomcvVCS} & Git, GitLab, GitHub, BitBucket\vspace{.2cm}\\
+    \textbf{\doomcvDevOps} & Terraform, Linux, Bash, LDAP
+\end{tabularx}
+
+\cvpanesubsection{\doomcvMethodology}
+\begin{tabularx}{0.9\mainpanewidth}{@{}l X@{}}
+    \textbf{\doomcvPM} & Scrum, Kanban, Agile\vspace{.2cm}\\
+    \textbf{\doomcvSEing} & OOAD, UML, ERD, FP, TDD, (Design) Patterns\\
+\end{tabularx}
+
+\cvpanesubsection{\doomcvCommSkills}
+\begin{tabularx}{0.9\mainpanewidth}{@{}l c X l c}
+    \textbf{\doomcvGerman} & \doomcvFluent & & \textbf{\doomcvRussian} & \doomcvNative\vspace{.2cm}\\
+    \textbf{\doomcvEnglish} & \doomcvFluent & & \textbf{\doomcvFrench} & \doomcvLangElem
+\end{tabularx}
+\end{mainpane}
+
+\newpage
+
+\cvsection{\doomcvWorkExp}
+\begin{timeline}{23.5}
+    \timelineentry{0,1}{\Large 07/2018 -- 07/2018}{
+        {\Large\textbf{\doomcvFEDev\ (\doomcvIntern)}}\\
+        {\large Sulzer GmbH $\cdot$ \doomcvMunich, \doomcvGermany\ \faMapMarker}\vspace{1pt}\\
+        {\large\textit{HTML, JS, D3.js, CSS3}}\vspace{1pt}\\
+        {\large\hspace{1em}\ding{118} \doomcvJITI}\\
+        {\large\hspace{1em}\ding{118} \doomcvJITII}
+    }
+    \timelineentry{0,3.9}{\Large 07/2019 -- 07/2019}{
+        {\Large\textbf{\doomcvFSDev\ (\doomcvIntern)}}\\
+        {\large Sulzer GmbH $\cdot$ \doomcvMunich, \doomcvGermany\ \faMapMarker}\vspace{1pt}\\
+        {\large\textit{MongoDB, Express.JS, Angular.js, Node.js}}\vspace{1pt}\\
+        {\large\hspace{1em}\ding{118} \doomcvJIITI}\\
+        {\large\hspace{1em}\ding{118} \doomcvJIITII}
+    }
+    \timelineentry{0,7.1}{\Large 11/2020 -- 12/2020}{
+        {\Large\textbf{\doomcvSE}}\\
+        {\large \doomcvOpenSource\ $\cdot$ \href{https://github.com/QueenOfDoom/FlappyBirdAI}{\doomcvHostedOn\ \doomcvGH} \faMapMarker}\vspace{1pt}\\
+        {\large\textit{Java 8, Java Swing, Apache Maven}}\vspace{1pt}\\
+        {\large\hspace{1em}\ding{118} \doomcvJIIITI}\\
+        {\large\hspace{1em}\ding{118} \doomcvJIIITII}\\
+        {\large\hspace{1em}\ding{118} \doomcvJIIITIII}\\
+        {\large\hspace{1em}\ding{118} \doomcvJIIITIV}
+    }
+    \timelineentry{0,11.2}{\Large 06/2021 -- 10/2021}{
+        {\Large\textbf{\doomcvFSDev}}\\
+        {\large MZV GmbH \& Co. KG $\cdot$ \doomcvMunich, \doomcvGermany\ \faMapMarker}\vspace{1pt}\\
+        {\large\textit{Java 16, Spring Boot, Node.js, Vue.js, Nest.js TypeScript, MySQL, HTML5, CSS3, JS}}\vspace{1pt}\\
+        {\large\hspace{1em}\ding{118} \doomcvJIVTI}\\
+        {\large\hspace{1em}\ding{118} \doomcvJIVTII}\\
+        {\large\hspace{1em}\ding{118} \doomcvJIVTIII}\\
+        {\large\hspace{1em}\ding{118} \doomcvJIVTIV}\\
+        {\large\hspace{1em}\ding{118} \doomcvJIVTV}\\
+        {\large\hspace{1em}\ding{118} \doomcvJIVTVI}\\
+        {\large\hspace{1em}\ding{118} \doomcvJIVTVII}
+    }
+    \timelineentry{0,15.5}{\Large 02/2022 -- \doomcvPresent}{
+        {\Large\textbf{\doomcvDevOpsArch\ \& \doomcvSE}}\\
+        {\large \doomcvOpenSource\ $\cdot$ \href{https://github.com/rshchekotov/doomlabs}{\doomcvHostedOn\ \doomcvGH} 
+        (\href{https://gitlab.com/romshchekotov/vision-infra-legacy}{\doomcvPrevHostedOn\ \doomcvGL}) \faMapMarker}\vspace{1pt}\\
+        {\large\textit{Terraform, Docker, \LaTeX, Markdown, NGinx, Bash, LDAP, Nuxt.js, TypeScript}}\vspace{1pt}\\
+        {\large\hspace{1em}\ding{118} \doomcvJVTI}\\
+        {\large\hspace{1em}\ding{118} \doomcvJVTII}\\
+        {\large\hspace{1em}\ding{118} \doomcvJVTIII}\\
+        {\large\hspace{1em}\ding{118} \doomcvJVTIV}\\
+        {\large\hspace{1em}\ding{118} \doomcvJVTV}\\
+        {\large\hspace{1em}\ding{118} \doomcvJVTVI}
+    }
+    \timelineentry{0,18.9}{\Large 06/2022 -- 10/2022}{
+        {\Large\textbf{\doomcvFSDev}}\\
+        {\large MAN Truck \& Bus SE $\cdot$ \doomcvMunich, \doomcvGermany\ \faMapMarker}\vspace{1pt}\\
+        {\large\textit{Java 11, Apache Maven, Lombok, Spring, JavaScript, Sencha.JS}}\vspace{1pt}\\
+        {\large\hspace{1em}\ding{118} \doomcvJVITI}\\
+        {\large\hspace{1em}\ding{118} \doomcvJVITII}
+    }
+    \timelineentry{0,21.9}{\Large 03/2023 -- \doomcvPresent}{
+        {\Large\textbf{\doomcvSE}}\\
+        {\large \doomcvOpenSource\ $\cdot$ \href{https://github.com/rshchekotov/whats-this}{\doomcvHostedOn\ \doomcvGH} \faMapMarker}\vspace{1pt}\\
+        {\large\textit{Kotlin, Gradle, GitHub Actions, Java Swing, MySQL, MongoDB}}\vspace{1pt}\\
+        {\large\hspace{1em}\ding{118} \doomcvJVIITI}\\
+        {\large\hspace{1em}\ding{118} \doomcvJVIITII}\\
+        {\large\hspace{1em}\ding{118} \doomcvJVIITIII}\\
+        {\large\hspace{1em}\ding{118} \doomcvJVIITIV}
+    }
+\end{timeline}
 
 \end{document}

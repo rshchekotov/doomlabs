@@ -161,3 +161,17 @@ variable "gitea_admin_password" {
   sensitive   = true
 }
 #endregion
+
+#region Keycloak Variables
+variable "keycloak_user" {
+  type        = string
+  description = "Keycloak User"
+  default     = "kc_admin"
+}
+
+variable "keycloak_password" {
+  type        = string
+  description = "Keycloak Password"
+  sensitive   = true
+}
+#endregion

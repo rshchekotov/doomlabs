@@ -44,8 +44,13 @@ variable "ldap_host" {
 }
 
 variable "git_host" {
-  type = string
+  type        = string
   description = "Hostname for the Git Container"
+}
+
+variable "keycloak_host" {
+  type        = string
+  description = "Hostname for the Keycloak Container"
 }
 
 variable "volume-certificates" {

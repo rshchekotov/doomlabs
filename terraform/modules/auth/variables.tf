@@ -73,6 +73,18 @@ variable "network-name" {
   description = "The name of the network to create the LDAP server on."
 }
 
+variable "keycloak_password" {
+  type        = string
+  description = "The password for the keycloak user (and database)."
+  sensitive   = true
+}
+
+variable "keycloak_username" {
+  type        = string
+  description = "The username for the keycloak user (and database)."
+  default     = "kc_admin"
+}
+
 variable "volume-certificates" {
   type        = string
   description = "The name of the volume to store the certificates in."

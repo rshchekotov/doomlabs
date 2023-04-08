@@ -70,7 +70,9 @@ resource "docker_service" "tcp_proxy" {
         GIT_HOST    = var.git_host,
         GIT_PORT    = local.gitea_port,
         WEB_PORT    = local.web_port,
-        WEB_PROTO   = local.web_proto
+        WEB_PROTO   = local.web_proto,
+        KC_HOST     = var.keycloak_host,
+        KC_PORT     = var.environment == "production" ? "8443" : "8080"
       }
     }
     restart_policy {

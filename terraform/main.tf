@@ -59,7 +59,7 @@ module "certificates" {
 }
 
 # LDAP Module
-module "ldap" {
+module "auth" {
   source = "./modules/auth"
 
   brand-name             = var.brand
@@ -72,6 +72,8 @@ module "ldap" {
   ldap_users             = var.ldap_users
   ldap_root_password     = var.ldap_root_password
   network-name           = local.internal-network
+  keycloak_username      = var.keycloak_user
+  keycloak_password      = var.keycloak_password
 
   # If in Production, wait for the Certificates module to initialize
   volume-certificates = var.environment == "production" ? module.certificates[0].certificates : docker_volume.dummy.name
@@ -95,9 +97,9 @@ module "git" {
   gitea-admin-name        = var.gitea_admin_name
   gitea-admin-password    = var.gitea_admin_password
   gitea-admin-email       = var.gitea_admin_email
-  ldap-host               = module.ldap.ldap_host
+  ldap-host               = module.auth.ldap_host
   ldap-port               = 389
-  ldap-bind-dn            = "cn=admin,${module.ldap.ldap_base_dn}"
+  ldap-bind-dn            = "cn=admin,${module.auth.ldap_base_dn}"
   ldap-bind-password      = var.ldap_root_password
   ldap-user-base          = var.ldap_user_base
   ldap-user-filter        = "(&${var.ldap_git_user_filter}(uid=%s))"
@@ -115,8 +117,9 @@ module "router" {
   environment         = var.environment
   host_name           = var.host_name
   host_tld            = var.host_tld
-  ldap_host           = module.ldap.ldap_host
+  ldap_host           = module.auth.ldap_host
   git_host            = module.git.git_host
+  keycloak_host       = module.auth.keycloak_host
   network-name        = local.internal-network
   volume-certificates = var.environment == "production" ? module.certificates[0].certificates : docker_volume.dummy.name
 

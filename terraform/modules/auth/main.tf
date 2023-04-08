@@ -15,6 +15,9 @@ terraform {
 
 #region Local Variables
 locals {
+  # Domain
+  base_domain = var.environment == "production" ? "${var.host_name}.${var.host_tld}" : "localhost"
+
   # Variables
   ldap_port    = var.environment == "production" ? 636 : 389
   ldap_base_dn = var.environment == "production" ? "dc=${var.host_name},dc=${var.host_tld}" : "dc=ldap,dc=localhost"
@@ -81,12 +84,12 @@ locals {
 #region Local Files
 resource "local_sensitive_file" "groups_ldif" {
   content  = local.groups_ldif
-  filename = "${path.module}/docker/secret/groups.ldif"
+  filename = "${path.module}/docker/ldap/secret/groups.ldif"
 }
 
 resource "local_sensitive_file" "users_ldif" {
   content  = local.users_ldif
-  filename = "${path.module}/docker/secret/users.ldif"
+  filename = "${path.module}/docker/ldap/secret/users.ldif"
 }
 #endregion
 
@@ -97,6 +100,10 @@ resource "docker_volume" "ldap_db" {
 
 resource "docker_volume" "ldap_config" {
   name = "${var.brand-abbrev}-ldap-config"
+}
+
+resource "docker_volume" "keycloak_db" {
+  name = "${var.brand-abbrev}-keycloak-db"
 }
 #endregion
 
@@ -111,12 +118,12 @@ resource "docker_secret" "ldap_env" {
 }
 #endregion
 
-#region Docker Image
+#region Docker Images
 resource "docker_image" "ldap" {
   name = "${var.brand-name}/seeded-ldap"
 
   build {
-    context = "${path.module}/docker"
+    context = "${path.module}/docker/ldap"
     tag     = ["${var.brand-name}/seeded-ldap-${var.environment}:1.0.0"]
     version = "2"
   }
@@ -126,9 +133,95 @@ resource "docker_image" "ldap" {
     local_sensitive_file.users_ldif
   ]
 }
+
+resource "docker_image" "keycloak" {
+  name = "${var.brand-name}/keycloak"
+
+  build {
+    context = "${path.module}/docker/keycloak"
+    tag     = ["${var.brand-name}/keycloak-${var.environment}:1.0.0"]
+    version = "2"
+  }
+}
 #endregion
 
-#region Docker Service
+#region Docker Services
+resource "docker_service" "keycloak_db" {
+  name = "${var.brand-abbrev}-keycloak-db-service"
+
+  task_spec {
+    container_spec {
+      image    = "postgres:15.2-alpine"
+      hostname = "${var.brand-abbrev}-keycloak-db"
+
+      env = {
+        POSTGRES_USER     = "${var.keycloak_username}",
+        POSTGRES_PASSWORD = "${var.keycloak_password}",
+        POSTGRES_DB       = "postgres"
+      }
+
+      mounts {
+        target = "/var/lib/postgresql/data"
+        source = docker_volume.keycloak_db.name
+        type   = "volume"
+      }
+    }
+
+    restart_policy {
+      condition    = "on-failure"
+      delay        = "5s"
+      max_attempts = 3
+      window       = "10s"
+    }
+
+    networks_advanced {
+      name = var.network-name
+    }
+
+    runtime = "container"
+  }
+}
+
+resource "docker_service" "keycloak" {
+  name = "${var.brand-abbrev}-keycloak-service"
+  task_spec {
+    container_spec {
+      image    = docker_image.keycloak.image_id
+      hostname = "${var.brand-abbrev}-keycloak"
+
+      env = {
+        KC_DB          = "postgres",
+        KC_DB_URL      = "jdbc:postgresql://${var.brand-abbrev}-keycloak-db:5432/postgres",
+        KC_DB_USERNAME = "${var.keycloak_username}",
+        KC_DB_PASSWORD = "${var.keycloak_password}",
+
+        KEYCLOAK_ADMIN          = "${var.keycloak_username}",
+        KEYCLOAK_ADMIN_PASSWORD = "${var.keycloak_password}",
+
+        KC_HOSTNAME = "sso.${local.base_domain}"
+      }
+    }
+
+    restart_policy {
+      condition    = "on-failure"
+      delay        = "5s"
+      max_attempts = 3
+      window       = "10s"
+    }
+
+    networks_advanced {
+      name = var.network-name
+    }
+
+    runtime = "container"
+  }
+
+  depends_on = [
+    docker_service.keycloak_db,
+    docker_service.ldap
+  ]
+}
+
 resource "docker_service" "ldap" {
   name = "${var.brand-abbrev}-ldap-service"
   task_spec {

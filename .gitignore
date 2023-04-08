@@ -2,6 +2,17 @@
 **/.terraform
 **/*.tfstate*
 
+# Generic Build Systems
+**/build/
+
+# LaTeX
+**/*.aux
+**/*.fdb_latexmk
+**/*.fls
+**/*.log
+**/*.pdf
+**/*.synctex.gz
+
 # Secrets
 **/secret/*
 **/*.tfvars

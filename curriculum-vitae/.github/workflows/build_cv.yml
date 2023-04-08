@@ -1,0 +1,40 @@
+name: Build Document
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up TeX Live
+      uses: dante-ev/latex-action@v2.0.0
+      with:
+        preinstall: |
+          latexmk
+
+    - name: Compile English document
+      run: |
+        latexmk -pdflua -interaction=nonstopmode -halt-on-error -shell-escape curriculum-vitae.tex
+        mv curriculum-vitae.pdf "Roman Shchekotov English CV.$(date +'%y-%m-%d').pdf"
+
+    - name: Modify document for German language
+      run: |
+        sed -i 's/\\documentclass\[\(.*\)\]{doomcv}/\\documentclass\[\1,german\]{doomcv}/g' curriculum-vitae.tex
+
+    - name: Compile German document
+      run: |
+        latexmk -pdflua -interaction=nonstopmode -halt-on-error -shell-escape curriculum-vitae.tex
+        mv curriculum-vitae.pdf "Roman Shchekotov German CV.$(date +'%y-%m-%d').pdf"
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: documents
+        path: |
+          *.pdf
+

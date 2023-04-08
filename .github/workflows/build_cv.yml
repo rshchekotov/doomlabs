@@ -1,4 +1,4 @@
-name: Build Document
+name: Build Curriculum Vitae
 
 on:
   workflow_dispatch:
@@ -9,10 +9,10 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up TeX Live
-      uses: dante-ev/latex-action@v2.0.0
+      uses: dante-ev/latex-action@latest
       with:
         preinstall: |
           latexmk

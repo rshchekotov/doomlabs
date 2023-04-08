@@ -1,5 +1,8 @@
 name: Build Curriculum Vitae
 
+env:
+  CV: curriculum-vitae
+
 on:
   workflow_dispatch:
 
@@ -15,22 +18,22 @@ jobs:
     - name: Build English CV
       uses: dante-ev/latex-action@2021-C
       with:
-        root_file: curriculum-vitae/curriculum-vitae.tex
-        args: -pdflua -interaction=nonstopmode -halt-on-error -shell-escape
+        root_file: ${{ env.CV }}/${{ env.CV }}.tex
+        args: -cd -pdflua -interaction=nonstopmode -halt-on-error -shell-escape
     - name: Post-process English CV
       run: |
-        mv curriculum-vitae.pdf "Roman Shchekotov English CV.$(date +'%y-%m-%d').pdf"
+        mv "$CV/$CV.pdf" "Roman Shchekotov English CV.$(date +'%y-%m-%d').pdf"
     - name: Pre-process German CV
       run: |
-        sed -i 's/\\documentclass\[\(.*\)\]{doomcv}/\\documentclass\[\1,german\]{doomcv}/g' curriculum-vitae/curriculum-vitae.tex
+        sed -i 's/\\documentclass\[\(.*\)\]{doomcv}/\\documentclass\[\1,german\]{doomcv}/g' "$CV/$CV.tex"
     - name: Build German CV
       uses: dante-ev/latex-action@latest
       with:
-        root_file: curriculum-vitae/curriculum-vitae.tex
-        args: -pdflua -interaction=nonstopmode -halt-on-error -shell-escape
+        root_file: ${{ env.CV }}/${{ env.CV }}.tex
+        args: -cd -pdflua -interaction=nonstopmode -halt-on-error -shell-escape
     - name: Post-process German CV
       run: |
-        mv curriculum-vitae.pdf "Roman Shchekotov German CV.$(date +'%y-%m-%d').pdf"
+        mv "$CV/$CV.pdf" "Roman Shchekotov German CV.$(date +'%y-%m-%d').pdf"
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:

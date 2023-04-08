@@ -31,7 +31,7 @@ jobs:
       run: |
         mv "$CV/$CV.pdf" "Roman Shchekotov English CV.$(date +'%y-%m-%d').pdf"
     - name: Upload English CV
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: Roman Shchekotov English CV
         path: |
@@ -49,7 +49,7 @@ jobs:
       run: |
         mv "$CV/$CV.pdf" "Roman Shchekotov German CV.$(date +'%y-%m-%d').pdf"
     - name: Upload German CV
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: Roman Shchekotov German CV
         path: |

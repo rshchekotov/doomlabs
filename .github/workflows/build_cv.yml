@@ -16,26 +16,26 @@ jobs:
     - name: Build English CV
       uses: dante-ev/latex-action@latest
       with:
-        root_file: ${GITHUB_WORKSPACE}/curriculum-vitae.tex
+        root_file: curriculum-vitae/curriculum-vitae.tex
         args: -pdflua -interaction=nonstopmode -halt-on-error -shell-escape
     - name: Post-process English CV
       run: |
-        mv ${GITHUB_WORKSPACE}/curriculum-vitae.pdf "${GITHUB_WORKSPACE}/Roman Shchekotov English CV.$(date +'%y-%m-%d').pdf"
+        mv curriculum-vitae.pdf "Roman Shchekotov English CV.$(date +'%y-%m-%d').pdf"
     - name: Pre-process German CV
       run: |
-        sed -i 's/\\documentclass\[\(.*\)\]{doomcv}/\\documentclass\[\1,german\]{doomcv}/g' ${GITHUB_WORKSPACE}/curriculum-vitae.tex
+        sed -i 's/\\documentclass\[\(.*\)\]{doomcv}/\\documentclass\[\1,german\]{doomcv}/g' curriculum-vitae/curriculum-vitae.tex
     - name: Build German CV
       uses: dante-ev/latex-action@latest
       with:
-        root_file: ${GITHUB_WORKSPACE}/curriculum-vitae.tex
+        root_file: curriculum-vitae/curriculum-vitae.tex
         args: -pdflua -interaction=nonstopmode -halt-on-error -shell-escape
     - name: Post-process German CV
       run: |
-        mv ${GITHUB_WORKSPACE}/curriculum-vitae.pdf "${GITHUB_WORKSPACE}/Roman Shchekotov German CV.$(date +'%y-%m-%d').pdf"
+        mv curriculum-vitae.pdf "Roman Shchekotov German CV.$(date +'%y-%m-%d').pdf"
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
         name: documents
         path: |
-          ${GITHUB_WORKSPACE}/*.pdf
+          *.pdf
 

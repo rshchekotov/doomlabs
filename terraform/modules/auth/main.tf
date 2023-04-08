@@ -171,14 +171,5 @@ resource "docker_service" "ldap" {
 
     runtime = "container"
   }
-
-  #endpoint_spec {
-  #  ports {
-  #    protocol       = "tcp"
-  #    publish_mode   = "ingress"
-  #    published_port = local.ldap_port
-  #    target_port    = local.ldap_port
-  #  }
-  #}
 }
 #endregion

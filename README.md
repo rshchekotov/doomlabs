@@ -66,12 +66,6 @@ The great world of Open Source, has created a great tool for note-taking:
 [Trilium](https://github.com/zadam/trilium).
 These notes can also be sync'ed across devices using a sync-server.
 
-### Komga Sync Server
-As a passionate fan of Japanese culture and media, I happen to read a lot of
-manga and would love a way to sync my progress across devices.
-[Komga](https://komga.org/) is a great tool for that, and I will be running
-it on my server.
-
 ### Monitoring
 I plan on adding some monitoring to the server, so I can keep track of things.
 This should be admin(myself)-only and will be achieved with
